@@ -129,7 +129,7 @@ export function ShippingCalculator({
                       {o.company} · até {o.days} {o.days === 1 ? "dia útil" : "dias úteis"}
                     </span>
                   </span>
-                  <span className="num font-semibold text-ink">{formatBRL(o.priceCents)}</span>
+                  <span className="num whitespace-nowrap font-semibold text-ink">{formatBRL(o.priceCents)}</span>
                 </>
               );
               return (

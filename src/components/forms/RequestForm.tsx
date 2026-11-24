@@ -60,11 +60,13 @@ export function RequestForm({
   submitLabel,
   initialItems = [],
   allowCartImport = false,
+  autoImportCart = false,
 }: {
   type: QuoteType;
   submitLabel: string;
   initialItems?: RequestItem[];
   allowCartImport?: boolean;
+  autoImportCart?: boolean;
 }) {
   const [state, action, pending] = useActionState<RequestState, FormData>(submitRequest, { status: "idle" });
   const [items, setItems] = useState<RequestItem[]>(initialItems);
@@ -75,6 +77,17 @@ export function RequestForm({
   useEffect(() => {
     if (state.status === "ok") window.scrollTo({ top: 0, behavior: "smooth" });
   }, [state.status]);
+
+  const [imported, setImported] = useState(false);
+  useEffect(() => {
+    if (!autoImportCart || imported || lines.length === 0) return;
+    setImported(true);
+    setItems((cur) => {
+      const map = new Map(cur.map((i) => [i.productId, i]));
+      for (const l of lines) map.set(l.productId, { productId: l.productId, name: l.name, quantity: l.quantity });
+      return [...map.values()];
+    });
+  }, [autoImportCart, imported, lines]);
 
   if (state.status === "ok") {
     return (
