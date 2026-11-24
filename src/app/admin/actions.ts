@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSession, destroySession, requireAdmin } from "@/lib/auth/session";
+import { importCosts } from "@/lib/catalog/import-costs";
 import { recomputePrices } from "@/lib/catalog/reprice";
 import { prisma } from "@/lib/db";
 import { onlyDigits } from "@/lib/documents";
@@ -254,4 +255,20 @@ export async function saveSettingsAction(fd: FormData) {
   if (data.defaultMarkupPercent !== before.defaultMarkupPercent) await recomputePrices();
   refreshStore();
   redirect("/admin/configuracoes?ok=1");
+}
+
+// ---------- importar custos ----------
+
+export async function importCostsAction(fd: FormData) {
+  await requireAdmin();
+  const file = fd.get("file");
+  if (!(file instanceof File) || file.size === 0 || file.size > 2 * 1024 * 1024) redirect("/admin/produtos/importar?erro=arquivo");
+  let result: { updated: number; unknown: number; repriced: number };
+  try {
+    result = await importCosts(await file.text());
+  } catch {
+    redirect("/admin/produtos/importar?erro=arquivo");
+  }
+  refreshStore();
+  redirect(`/admin/produtos/importar?ok=${result.updated}&precos=${result.repriced}&desconhecidos=${result.unknown}`);
 }

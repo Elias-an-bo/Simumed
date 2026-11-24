@@ -45,6 +45,7 @@ export default async function ProductsAdmin({ searchParams }: { searchParams: Pr
             {f !== "todos" && <input type="hidden" name="filtro" value={f} />}
             <input name="q" defaultValue={q} placeholder="Nome, SKU ou código do fornecedor" className="field h-10 min-h-0" aria-label="Buscar produtos" />
           </form>
+          <Link href="/admin/produtos/importar" className="btn btn-secondary h-10 min-h-0">Importar custos</Link>
           <Link href="/admin/produtos/novo" className="btn btn-primary h-10 min-h-0"><Plus className="size-4" aria-hidden /> Novo</Link>
         </div>
       </AdminTitle>

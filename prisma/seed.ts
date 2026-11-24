@@ -20,6 +20,9 @@ type CatalogItem = {
   dimsEstimated: boolean; freightOnRequest: boolean; warrantyDays: number; ncm: string | null;
 };
 
+/** --only-missing: usado a cada publicação; só cria o que falta e nunca sobrescreve o que foi editado no painel. */
+const ONLY_MISSING = process.argv.includes("--only-missing");
+
 async function main() {
   const settings = await prisma.settings.upsert({ where: { id: "default" }, update: {}, create: { id: "default" } });
 
@@ -55,6 +58,7 @@ async function main() {
 
   let created = 0;
   let updated = 0;
+  const createdSkus = new Set<string>();
   for (const item of catalog) {
     const cat = catIds.get(item.subcategory?.slug ?? item.category)!;
     const cost = costs[item.sku];
@@ -63,6 +67,7 @@ async function main() {
     const costCents = cost?.costCents ?? existing?.costCents ?? 0;
     const priceCents = priceFromCost(costCents, markup);
 
+    if (existing && ONLY_MISSING) continue;
     if (existing) {
       await prisma.product.update({
         where: { id: existing.id },
@@ -87,6 +92,7 @@ async function main() {
         },
       });
       created++;
+      createdSkus.add(item.sku);
     }
   }
 
@@ -98,6 +104,7 @@ async function main() {
     for (const [sku, urls] of Object.entries(manifest)) {
       const product = await prisma.product.findUnique({ where: { sku }, select: { id: true, name: true, _count: { select: { images: true } } } });
       if (!product || product._count.images > 0 || urls.length === 0) continue;
+      if (ONLY_MISSING && !createdSkus.has(sku)) continue; // fotos só para produtos novos nesta execução
       await prisma.productImage.createMany({
         data: urls.map((url, i) => ({ productId: product.id, url, alt: i === 0 ? product.name : `${product.name} — foto ${i + 1}`, position: i })),
       });
@@ -119,7 +126,7 @@ async function main() {
 
   // destaques iniciais: alguns itens de cada categoria principal, com preço
   const featuredCount = await prisma.product.count({ where: { featured: true } });
-  if (featuredCount === 0) {
+  if (featuredCount === 0 && created > 0) {
     for (const slug of ["simuladores", "modelos-anatomicos", "microscopios"]) {
       const parent = catIds.get(slug);
       if (!parent) continue;
