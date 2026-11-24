@@ -30,6 +30,12 @@ describe("normalizeProductName", () => {
       "Ocular para microscópio biológico com retículo para medição",
     );
   });
+  it("expande abreviações da cotação", () => {
+    expect(normalizeProductName("MICROSCOPIO BIOLOG BINOCULAR C/OPTICA PLANA INF AUMENT.40XA1600X ILUM.5W")).toBe(
+      "Microscópio biológico binocular com óptica plana infinita aumento 40X a 1600X iluminação 5W",
+    );
+    expect(normalizeProductName("CABECA EM DISCO SECCIONADA")).toBe("Cabeça em disco seccionada");
+  });
   it("junta espaços repetidos", () => {
     expect(normalizeProductName("  KIT   TRAUMA  ")).toBe("Kit trauma");
   });

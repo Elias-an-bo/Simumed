@@ -32,7 +32,8 @@ const ACCENTS: Record<string, string> = {
   musculos: "músculos", musculo: "músculo", nucleo: "núcleo", molecula: "molécula", atomicas: "atômicas",
   atomica: "atômica", orbitas: "órbitas", orbital: "orbital", aumento: "aumento", visualizacao: "visualização",
   ossea: "óssea", osseo: "ósseo", ossos: "ossos", mitose: "mitose", meiose: "meiose", genetica: "genética",
-  embriao: "embrião", fecundacao: "fecundação", reproducao: "reprodução", reprodutor: "reprodutor", orbitais: "orbitais",
+  embriao: "embrião", biolog: "biológico", aument: "aumento", ilum: "iluminação", inf: "infinita",
+  cabeca: "cabeça", pescoco: "pescoço", esteroscopico: "estereoscópico", fecundacao: "fecundação", reproducao: "reprodução", reprodutor: "reprodutor", orbitais: "orbitais",
 };
 
 /** Gera slug de URL: sem acentos, minúsculo, hífens. */
@@ -52,6 +53,7 @@ export function slugify(s: string): string {
 export function normalizeProductName(raw: string): string {
   let s = raw.replace(/\s+/g, " ").trim();
   s = s.replace(/\bC\//gi, "com ").replace(/\bP\//gi, "para ").replace(/\bS\//gi, "sem ");
+  s = s.replace(/\b(AUMENT|ILUM)\.\s*/gi, "$1 ").replace(/(\d+X)A(\d+X)\b/gi, "$1 a $2");
   s = s.replace(/(\d)\s*(CM|MM|KG|ML|M)\b/gi, (_m, d: string, u: string) => `${d} ${u.toLowerCase()}`);
   s = s.replace(/\s+/g, " ").trim();
 

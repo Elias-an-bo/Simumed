@@ -3022,7 +3022,7 @@
   {
     "sku": "SM-0152",
     "slug": "cabeca-em-disco-seccionada-em-12-partes-premium",
-    "name": "Cabeca em disco seccionada em 12 partes premium",
+    "name": "Cabeça em disco seccionada em 12 partes premium",
     "category": "modelos-anatomicos",
     "subcategory": {
       "slug": "seccoes-anatomicas",
@@ -5442,8 +5442,8 @@
   },
   {
     "sku": "SM-0275",
-    "slug": "microscopio-biolog-binocular-com-optica-plana-inf-aument-40xa1600x-ilum-5w",
-    "name": "Microscópio biolog binocular com óptica plana inf aument.40xa1600x ilum.5w",
+    "slug": "microscopio-biologico-binocular-com-optica-plana-infinita-aumento-40x-a-1600x-iluminacao-5w",
+    "name": "Microscópio biológico binocular com óptica plana infinita aumento 40X a 1600X iluminação 5W",
     "category": "microscopios",
     "subcategory": {
       "slug": "microscopios-biologicos",
@@ -5462,8 +5462,8 @@
   },
   {
     "sku": "SM-0276",
-    "slug": "microscopio-biolog-trinocular-com-optica-plana-inf-aument-40xa1600x-ilum-5w",
-    "name": "Microscópio biolog trinocular com óptica plana inf aument.40xa1600x ilum.5w",
+    "slug": "microscopio-biologico-trinocular-com-optica-plana-infinita-aumento-40x-a-1600x-iluminacao-5w",
+    "name": "Microscópio biológico trinocular com óptica plana infinita aumento 40X a 1600X iluminação 5W",
     "category": "microscopios",
     "subcategory": {
       "slug": "microscopios-biologicos",
@@ -5482,8 +5482,8 @@
   },
   {
     "sku": "SM-0277",
-    "slug": "microscopio-estereoscopio-binocular-aument-20xa80x-ilum-1w",
-    "name": "Microscópio estereoscópio binocular aument.20xa80x ilum.1w",
+    "slug": "microscopio-estereoscopio-binocular-aumento-20x-a-80x-iluminacao-1w",
+    "name": "Microscópio estereoscópio binocular aumento 20X a 80X iluminação 1W",
     "category": "microscopios",
     "subcategory": {
       "slug": "estereoscopios",
@@ -5502,8 +5502,8 @@
   },
   {
     "sku": "SM-0278",
-    "slug": "microscopio-estereoscopio-binocular-com-zoom-e-aument-7xa90x-ilum-1w",
-    "name": "Microscópio estereoscópio binocular com zoom e aument.7xa90x ilum.1w",
+    "slug": "microscopio-estereoscopio-binocular-com-zoom-e-aumento-7x-a-90x-iluminacao-1w",
+    "name": "Microscópio estereoscópio binocular com zoom e aumento 7X a 90X iluminação 1W",
     "category": "microscopios",
     "subcategory": {
       "slug": "estereoscopios",
@@ -5522,8 +5522,8 @@
   },
   {
     "sku": "SM-0279",
-    "slug": "microscopio-estereoscopio-trinocular-com-zoom-e-aument-7xa90x-ilum-1w",
-    "name": "Microscópio estereoscópio trinocular com zoom e aument.7xa90x ilum.1w",
+    "slug": "microscopio-estereoscopio-trinocular-com-zoom-e-aumento-7x-a-90x-iluminacao-1w",
+    "name": "Microscópio estereoscópio trinocular com zoom e aumento 7X a 90X iluminação 1W",
     "category": "microscopios",
     "subcategory": {
       "slug": "estereoscopios",
