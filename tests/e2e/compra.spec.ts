@@ -28,6 +28,9 @@ test("compra com Pix: produto → carrinho → frete → checkout → pedido pag
 
   await expect(page).toHaveURL(/\/pedido\//);
   await expect(page.getByRole("heading", { name: "Pague com Pix" })).toBeVisible();
+  // dados pessoais não ficam guardados no navegador (computadores compartilhados em instituições)
+  const stored = await page.evaluate(() => [localStorage.getItem("simumed:checkout"), sessionStorage.getItem("simumed:checkout")]);
+  expect(stored).toEqual([null, null]);
   await expect(page.getByRole("link", { name: /Carrinho, 0 itens/ })).toBeVisible();
   await page.getByRole("button", { name: /Simular pagamento aprovado/ }).click();
   await expect(page.getByRole("heading", { name: "Obrigado pela compra!" })).toBeVisible();

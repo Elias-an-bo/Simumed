@@ -32,6 +32,7 @@ deve ser enviada por chat ou e-mail: elas vão direto nos painéis de cada servi
    - Evento: **Pagamentos**
    - Salve e copie a **assinatura secreta**.
 4. Confira em **Seu negócio → Custos** as taxas e o parcelamento sem juros que você quer oferecer.
+5. **Cadastre uma chave Pix na conta do Mercado Pago** (Seu perfil → Chaves Pix). Sem ela o Pix não é gerado.
 
 ## 3. Melhor Envio
 

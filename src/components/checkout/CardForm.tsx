@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CardPayment, initMercadoPago } from "@mercadopago/sdk-react";
 import { Loader2 } from "lucide-react";
 
@@ -36,12 +36,12 @@ export function CardForm({
   const [reject, setReject] = useState(false);
   const [busy, setBusy] = useState(false);
 
-  useEffect(() => {
-    if (provider === "mercadopago" && publicKey && !initialized) {
-      initMercadoPago(publicKey, { locale: "pt-BR" });
-      initialized = true;
-    }
-  }, [provider, publicKey]);
+  // Precisa acontecer ANTES do <CardPayment> montar: o Brick lê a chave pública no próprio useEffect,
+  // que roda antes do useEffect deste componente. Idempotente e só no navegador.
+  if (provider === "mercadopago" && publicKey && !initialized && typeof window !== "undefined") {
+    initMercadoPago(publicKey, { locale: "pt-BR" });
+    initialized = true;
+  }
 
   if (provider !== "mercadopago") {
     return (
@@ -92,7 +92,7 @@ export function CardForm({
       )}
       <CardPayment
         key={amountCents}
-        initialization={{ amount: amountCents / 100, payer: { email } }}
+        initialization={{ amount: amountCents / 100, ...(/^\S+@\S+\.\S+$/.test(email) ? { payer: { email } } : {}) }}
         customization={{ paymentMethods: { maxInstallments }, visual: { style: { theme: "default" } } }}
         locale="pt-BR"
         onReady={() => setReady(true)}

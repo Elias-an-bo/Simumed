@@ -61,7 +61,8 @@ export function CheckoutForm({
   // rascunho e frete escolhido no carrinho
   useEffect(() => {
     try {
-      const draft = JSON.parse(localStorage.getItem(DRAFT_KEY) ?? "null");
+      localStorage.removeItem(DRAFT_KEY); // versões antigas guardavam o rascunho de forma permanente
+      const draft = JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? "null");
       if (draft) setF((cur) => ({ ...cur, ...draft }));
       const saved = JSON.parse(sessionStorage.getItem(SHIPPING_KEY) ?? "null");
       if (saved?.cep) {
@@ -71,9 +72,10 @@ export function CheckoutForm({
     } catch {}
   }, []);
   useEffect(() => {
-    const { document: _d, ...safe } = f; // não guarda CPF/CNPJ no navegador
+    // rascunho só durante a aba aberta (computadores compartilhados) e sem CPF/CNPJ
+    const { document: _d, ...safe } = f;
     try {
-      localStorage.setItem(DRAFT_KEY, JSON.stringify(safe));
+      sessionStorage.setItem(DRAFT_KEY, JSON.stringify(safe));
     } catch {}
   }, [f]);
 
@@ -191,6 +193,7 @@ export function CheckoutForm({
       clear();
       try {
         sessionStorage.removeItem(SHIPPING_KEY);
+        sessionStorage.removeItem(DRAFT_KEY);
       } catch {}
       router.push(`/pedido/${data.orderId}?t=${data.accessToken}`);
     } catch {
