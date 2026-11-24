@@ -10,6 +10,8 @@ export interface ParsedItem {
   availability: ParsedAvailability;
   leadTimeDays: number | null;
   categoryPath: [string, string];
+  /** Link da página do produto no fornecedor (privado). null se não houver link de produto. */
+  supplierUrl: string | null;
   lengthCm: number;
   widthCm: number;
   heightCm: number;
@@ -117,6 +119,7 @@ export function parseCotacao(text: string): ParsedItem[] {
       costCents: parseBRLToCents(head[4]),
       ...availabilityFrom(availabilityText),
       categoryPath: categoryFromUrl(url) ?? inferCategoryPath(nameParts.join(" ")),
+      supplierUrl: categoryFromUrl(url) ? url : null,
       lengthCm: num(dimsLine, "Comprimento\\(cm\\)"),
       widthCm: num(dimsLine, "Largura\\(cm\\)"),
       heightCm: num(dimsLine, "Altura\\(cm\\)"),

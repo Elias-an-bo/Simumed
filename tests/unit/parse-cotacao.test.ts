@@ -34,6 +34,12 @@ describe("parseCotacao", () => {
     expect(items[2].categoryPath).toEqual(["laminas-preparadas", ""]);
   });
 
+  it("guarda o link do produto no fornecedor (só para uso privado)", () => {
+    expect(items[0].supplierUrl).toBe(
+      "https://www.fornecedor.example/produtos/simuladores/cuidados-com-paciente/manequim-bissexual-adulto-c-orgaos-internos",
+    );
+  });
+
   it("lê medidas, peso, garantia e NCM", () => {
     expect(items[0]).toMatchObject({ lengthCm: 115, widthCm: 48, heightCm: 24, weightKg: 17.77, warrantyDays: 365, ncm: "90230000" });
     expect(items[2]).toMatchObject({ heightCm: 3.5, weightKg: 0 });
@@ -48,6 +54,10 @@ describe("casos difíceis da cotação", () => {
   });
   it("link de busca (sem /produtos/): categoria deduzida pelo nome", () => {
     expect(items[5].categoryPath).toEqual(["modelos-anatomicos", "garganta"]);
+  });
+  it("link de busca não conta como link de produto", () => {
+    expect(items[5].supplierUrl).toBeNull();
+    expect(items[4].supplierUrl).toBeNull();
   });
   it("item sem link: categoria deduzida pelo nome e garantia padrão", () => {
     expect(items[4].categoryPath).toEqual(["microscopios", "acessorios"]);

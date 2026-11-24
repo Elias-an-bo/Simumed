@@ -34,7 +34,7 @@ if (items.length === 0) {
 
 const PUBLIC = "data/catalogo.json";
 const PRIVATE = "data/private/custos.json";
-type Costs = Record<string, { supplierCode: string; costCents: number }>;
+type Costs = Record<string, { supplierCode: string; costCents: number; supplierUrl?: string | null }>;
 const previousCosts: Costs = existsSync(PRIVATE) ? JSON.parse(readFileSync(PRIVATE, "utf8")) : {};
 const skuBySupplier = new Map(Object.entries(previousCosts).map(([sku, v]) => [v.supplierCode, sku]));
 let nextSku = Object.keys(previousCosts).reduce((max, sku) => Math.max(max, Number(sku.slice(3)) || 0), 0) + 1;
@@ -73,7 +73,7 @@ for (const it of items) {
     warrantyDays: it.warrantyDays,
     ncm: it.ncm,
   });
-  costs[sku] = { supplierCode: it.supplierCode, costCents: it.costCents };
+  costs[sku] = { supplierCode: it.supplierCode, costCents: it.costCents, supplierUrl: it.supplierUrl };
 }
 
 mkdirSync("data/private", { recursive: true });

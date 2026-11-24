@@ -6,6 +6,7 @@ import { AddToCartButton } from "@/components/product/AddToCartButton";
 import { AvailabilityBadge, availabilityLabel } from "@/components/product/AvailabilityBadge";
 import { PriceBlock } from "@/components/product/PriceBlock";
 import { ProductGrid } from "@/components/product/ProductCard";
+import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductVisual } from "@/components/product/ProductVisual";
 import { ShippingCalculator } from "@/components/product/ShippingCalculator";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -90,8 +91,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <Breadcrumbs items={[...crumbs, { label: product.name }]} />
 
       <div className="mt-6 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-12">
-        <div className="card aspect-[4/3] overflow-hidden bg-surface lg:sticky lg:top-40 lg:self-start">
-          <ProductVisual image={product.images[0]} name={product.name} rootSlug={root} categoryName={product.category.name} size="page" />
+        <div className="lg:sticky lg:top-40 lg:self-start">
+          <ProductGallery
+            images={product.images}
+            name={product.name}
+            fallback={<ProductVisual image={null} name={product.name} rootSlug={root} categoryName={product.category.name} size="page" />}
+          />
         </div>
 
         <div>

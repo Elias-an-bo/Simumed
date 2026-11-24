@@ -90,6 +90,22 @@ async function main() {
     }
   }
 
+  // fotos baixadas do fornecedor (data/imagens.json): só para produtos que ainda não têm foto
+  const imagesPath = "data/imagens.json";
+  if (existsSync(imagesPath)) {
+    const manifest: Record<string, string[]> = JSON.parse(readFileSync(imagesPath, "utf8"));
+    let attached = 0;
+    for (const [sku, urls] of Object.entries(manifest)) {
+      const product = await prisma.product.findUnique({ where: { sku }, select: { id: true, name: true, _count: { select: { images: true } } } });
+      if (!product || product._count.images > 0 || urls.length === 0) continue;
+      await prisma.productImage.createMany({
+        data: urls.map((url, i) => ({ productId: product.id, url, alt: i === 0 ? product.name : `${product.name} — foto ${i + 1}`, position: i })),
+      });
+      attached++;
+    }
+    console.log(`Fotos: ${attached} produtos receberam fotos.`);
+  }
+
   // primeiro usuário do painel
   const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
   const password = process.env.ADMIN_PASSWORD;
@@ -108,9 +124,9 @@ async function main() {
       const parent = catIds.get(slug);
       if (!parent) continue;
       const picks = await prisma.product.findMany({
-        where: { priceCents: { gt: 0, lt: settings.quoteThresholdCents }, OR: [{ categoryId: parent.id }, { category: { parentId: parent.id } }] },
+        where: { priceCents: { gt: 0, lt: settings.quoteThresholdCents }, images: { some: {} }, OR: [{ categoryId: parent.id }, { category: { parentId: parent.id } }] },
         orderBy: { priceCents: "desc" },
-        take: 3,
+        take: 4,
       });
       await prisma.product.updateMany({ where: { id: { in: picks.map((p) => p.id) } }, data: { featured: true } });
     }
