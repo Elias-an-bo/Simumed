@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import { CheckCircle2, Loader2, ShoppingCart, Trash2 } from "lucide-react";
 import { submitRequest, type RequestState } from "@/lib/quotes/actions";
@@ -105,7 +105,15 @@ export function RequestForm({
 
   const isProducts = type === "PRODUCTS";
   return (
-    <form action={action} className="card grid gap-5 p-6 md:p-8" noValidate={false}>
+    <form
+      className="card grid gap-5 p-6 md:p-8"
+      onSubmit={(e) => {
+        // sem o reset automático do React 19: em caso de erro, o que a pessoa escreveu continua no formulário
+        e.preventDefault();
+        const fd = new FormData(e.currentTarget);
+        startTransition(() => action(fd));
+      }}
+    >
       {errors.form && (
         <p role="alert" className="rounded-[var(--radius-control)] bg-[#fdecec] p-3 text-sm text-danger">
           {errors.form}
