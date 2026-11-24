@@ -1,0 +1,48 @@
+                     FORNECEDOR EXEMPLO LTDA
+                    CNPJ: 00.000.000/0000-00                                                                                             Cotação
+                                    Produto                                  Qtde.       Vl. Unitário         Valor Total
+                  XX100 - MANEQUIM BISSEXUAL ADULTO C/ ÓRGÃOS INTERNOS P/     01       R$ 2.728,7528         R$ 2.728,75
+                  TREINO DE ENFERMAGEM DE 1,70CM                           Disponibilidade: Disponível em estoque
+                                                                                                     Origem de Faturamento: Santa Catarina
+                  Descritivo técnico:                                                                NCM: 90230000 IPI: 0,00%
+                  https://www.fornecedor.example/produtos/simuladores/cuidados-com-paciente/manequim- Observação:
+                  bissexual-adulto-c-orgaos-internos
+                  Comprimento(cm): 115 Largura(cm): 48        Altura(cm): 24 Peso(Kg): 17,77 Garantia(dia): 365
+                  XX200/B - SIMULADOR DE RCP ELETRÔNICO CORPO INTEIRO                                     01      R$ 4.301,0160         R$ 4.301,02
+                                                                                                     Disponibilidade: Previsão em 120 dias aprox.
+                                                                                                     Origem de Faturamento: Santa Catarina
+                  Descritivo técnico:                                                                NCM: 90230000 IPI: 0,00%
+                  https://www.fornecedor.example/produtos/simuladores/rcp/simulador-de-rcp-eletronico-     Observação:
+                  corpo-inteiro
+                  Comprimento(cm): 97 Largura(cm): 32     Altura(cm): 57   Peso(Kg): 19,29 Garantia(dia): 365
+                                                                                                                                             Página 1 de 1
+                     FORNECEDOR EXEMPLO LTDA
+                  OBJ-4 - OBJETIVA ACROMÁTICA 4X                                                         01       R$ 33,5533           R$ 33,55
+                                                                                                    Disponibilidade: Disponível em estoque
+                                                                                                    Origem de Faturamento: São Paulo
+                  Descritivo técnico:                                                               NCM: 90230000 IPI: 0,00 %
+                  https://www.fornecedor.example/produtos/laminas-preparadas/kit-c-80-laminas-preparadas- Observação:
+                  estudo-histologia
+                  Comprimento(cm): 20 Largura(cm): 16     Altura(cm): 3,5 Peso(Kg): 0       Garantia(dia): 365
+                  XX300 - ESQUELETO HUMANO PADRAO 1,70 CM C/ ARTICULAÇÕES E     01       R$ 1.000,0000         R$ 1.000,00
+                  INSERÇÃO                                                   Disponibilidade: Disponível em estoque
+                                                                                                    Origem de Faturamento: Santa Catarina
+                  Descritivo técnico:                                                               NCM: 90230000 IPI: 0,00%
+                  https://www.fornecedor.example/produtos/modelos-anatomicos/esqueletos/esqueleto-        Observação:
+                  humano-padrao-de-1-70-cm-c-articulacoes-insercoes-musculares-e-haste-c-suporte-e-
+                  Comprimento(cm): 98 Largura(cm): 46
+                  rodas                                    Altura(cm): 30   Peso(Kg): 11,63 Garantia(dia): 365
+                  XX400 - OCULAR PARA MICROSCOPIO BIOLOGICO 10X23MM                               01       R$ 85,5118           R$ 85,51
+                                                                                                   Disponibilidade: Disponível em estoque
+                                                                                                   Origem de Faturamento: Santa Catarina
+                  Descritivo técnico:                                                              NCM:     IPI:
+                                                                                                   Observação:
+
+                  Comprimento(cm): 0     Largura(cm): 0    Altura(cm): 0    Peso(Kg): 0    Garantia(dia):
+                  XX500 - CAVIDADE NASAL                                                                01        R$ 112,1864        R$ 112,19
+                                                                                                    Disponibilidade: Disponível em estoque
+                                                                                                    Origem de Faturamento: São Paulo
+                  Descritivo técnico:                                                               NCM: 90230000 IPI: 0,00%
+                  https://www.fornecedor.example/pesquisa-sig/XX-500                                     Observação:
+
+                  Comprimento(cm): 14   Largura(cm): 5    Altura(cm): 16   Peso(Kg): 0,24   Garantia(dia): 365

@@ -1,0 +1,251 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Availability {
+  IN_STOCK   // pronta entrega
+  ON_ORDER   // sob encomenda (prazo)
+  ON_REQUEST // sob consulta
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  PREPARING
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+enum PaymentMethod {
+  PIX
+  CARD
+  BOLETO
+}
+
+enum QuoteType {
+  PRODUCTS
+  SOFTWARE
+  MAINTENANCE
+  CONTACT
+}
+
+enum QuoteStatus {
+  NEW
+  IN_PROGRESS
+  ANSWERED
+  WON
+  LOST
+}
+
+model Category {
+  id            String     @id @default(cuid())
+  slug          String     @unique
+  name          String
+  description   String?
+  parentId      String?
+  parent        Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children      Category[] @relation("CategoryTree")
+  markupPercent Float?     // null = herda da categoria-mãe / padrão da loja
+  position      Int        @default(0)
+  products      Product[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([parentId])
+}
+
+model Product {
+  id               String         @id @default(cuid())
+  sku              String         @unique
+  slug             String         @unique
+  name             String
+  shortDescription String?
+  description      String?
+  categoryId       String
+  category         Category       @relation(fields: [categoryId], references: [id])
+  // privados (nunca expostos na vitrine)
+  supplierCode     String?
+  costCents        Int            @default(0)
+  markupPercent    Float?         // null = herda da categoria
+  // público
+  priceCents       Int            @default(0)
+  availability     Availability   @default(IN_STOCK)
+  leadTimeDays     Int?
+  weightKg         Float          @default(0)
+  lengthCm         Float          @default(0)
+  widthCm          Float          @default(0)
+  heightCm         Float          @default(0)
+  warrantyDays     Int            @default(365)
+  ncm              String?
+  quoteOnly        Boolean        @default(false)
+  freightOnRequest Boolean        @default(false)
+  dimsEstimated    Boolean        @default(false)
+  active           Boolean        @default(true)
+  featured         Boolean        @default(false)
+  images           ProductImage[]
+  orderItems       OrderItem[]
+  quoteItems       QuoteItem[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([categoryId])
+  @@index([active, featured])
+}
+
+model ProductImage {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+}
+
+model Settings {
+  id                   String   @id @default("default")
+  companyName          String   @default("Simumed")
+  legalName            String?
+  cnpj                 String?
+  address              String?
+  phone                String?
+  whatsapp             String?
+  email                String?
+  instagram            String?
+  originCep            String?
+  handlingDays         Int      @default(2)
+  defaultMarkupPercent Float    @default(40)
+  pixDiscountPercent   Float    @default(5)
+  maxInstallments      Int      @default(10)
+  quoteThresholdCents  Int      @default(1000000)
+  updatedAt            DateTime @updatedAt
+}
+
+model Order {
+  id                 String        @id @default(cuid())
+  number             Int           @unique @default(autoincrement())
+  accessToken        String        @unique
+  status             OrderStatus   @default(PENDING_PAYMENT)
+  // cliente
+  customerName       String
+  customerEmail      String
+  customerPhone      String
+  customerDocument   String
+  companyName        String?
+  stateRegistration  String?
+  // entrega
+  cep                String
+  street             String
+  streetNumber       String
+  complement         String?
+  district           String
+  city               String
+  state              String
+  // valores (centavos)
+  subtotalCents      Int
+  discountCents      Int           @default(0)
+  shippingCents      Int
+  totalCents         Int
+  // frete
+  shippingServiceId  String
+  shippingName       String
+  shippingCompany    String
+  shippingDays       Int
+  trackingCode       String?
+  // pagamento
+  paymentMethod      PaymentMethod
+  paymentProvider    String
+  paymentId          String?       @unique
+  paymentStatus      String?
+  installments       Int           @default(1)
+  pixQrCode          String?
+  pixQrCodeBase64    String?
+  pixExpiresAt       DateTime?
+  boletoUrl          String?
+  paidAt             DateTime?
+  notes              String?
+  items              OrderItem[]
+  events             OrderEvent[]
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model OrderItem {
+  id             String  @id @default(cuid())
+  orderId        String
+  order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId      String?
+  product        Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  sku            String
+  name           String
+  unitPriceCents Int
+  quantity       Int
+
+  @@index([orderId])
+}
+
+model OrderEvent {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  type      String   // created, payment, status, tracking, email, note
+  message   String
+  dedupeKey String?  @unique
+  createdAt DateTime @default(now())
+
+  @@index([orderId])
+}
+
+model QuoteRequest {
+  id           String      @id @default(cuid())
+  number       Int         @unique @default(autoincrement())
+  type         QuoteType
+  status       QuoteStatus @default(NEW)
+  name         String
+  email        String
+  phone        String
+  institution  String?
+  document     String?
+  city         String?
+  state        String?
+  message      String?
+  equipment    String?
+  brandModel   String?
+  internalNote String?
+  items        QuoteItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model QuoteItem {
+  id        String       @id @default(cuid())
+  quoteId   String
+  quote     QuoteRequest @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  name      String
+  sku       String?
+  quantity  Int
+
+  @@index([quoteId])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+}

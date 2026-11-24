@@ -5,6 +5,36 @@ const ACRONYMS = new Set([
 
 const LOWER_WORDS = new Set(["de", "da", "do", "das", "dos", "e", "em", "com", "para", "a", "o", "as", "os", "no", "na", "nos", "nas"]);
 
+/** Palavras que vêm sem acento na cotação do fornecedor. */
+const ACCENTS: Record<string, string> = {
+  injecao: "injeção", puncao: "punção", braco: "braço", antebraco: "antebraço", bebe: "bebê", padrao: "padrão",
+  microscopio: "microscópio", biologico: "biológico", biologica: "biológica", medicao: "medição", articulacao: "articulação",
+  articulacoes: "articulações", diametro: "diâmetro", orgao: "órgão", orgaos: "órgãos", coracao: "coração",
+  pulmao: "pulmão", cerebro: "cérebro", figado: "fígado", estomago: "estômago", pancreas: "pâncreas", cranio: "crânio",
+  vertebra: "vértebra", vertebras: "vértebras", toracica: "torácica", toracico: "torácico", anatomico: "anatômico",
+  anatomica: "anatômica", eletronico: "eletrônico", eletronica: "eletrônica", mecanico: "mecânico", intubacao: "intubação",
+  cateterizacao: "cateterização", afericao: "aferição", pressao: "pressão", seccao: "secção", secao: "seção",
+  femur: "fêmur", mao: "mão", maos: "mãos", umero: "úmero", gestacao: "gestação", evolucao: "evolução",
+  avaliacao: "avaliação", ulcera: "úlcera", decubito: "decúbito", glandula: "glândula", celula: "célula",
+  neuronio: "neurônio", dentaria: "dentária", odontologico: "odontológico", torax: "tórax", abdomen: "abdômen",
+  pelvis: "pélvis", basico: "básico", basica: "básica", avancado: "avançado", avancada: "avançada", clinico: "clínico",
+  clinica: "clínica", cirurgico: "cirúrgico", pratica: "prática", modulo: "módulo", modulos: "módulos",
+  acessorio: "acessório", acessorios: "acessórios", optica: "óptica", lampada: "lâmpada", iluminacao: "iluminação",
+  estereoscopio: "estereoscópio", esteroscopio: "estereoscópio", acromatica: "acromática", laminas: "lâminas",
+  lamina: "lâmina", botanica: "botânica", organica: "orgânica", inorganica: "inorgânica", introdutorio: "introdutório",
+  pecas: "peças", peca: "peça", veterinaria: "veterinária", mandibula: "mandíbula", encefalo: "encéfalo",
+  hemisferio: "hemisfério", arterias: "artérias", arteria: "artéria", arterial: "arterial", digestorio: "digestório",
+  respiratorio: "respiratório", circulatorio: "circulatório", urinario: "urinário", linfatico: "linfático",
+  endocrino: "endócrino", didatico: "didático", mamaria: "mamária", cordao: "cordão", ginecologico: "ginecológico",
+  pelvico: "pélvico", gluteo: "glúteo", subcutanea: "subcutânea", intradermica: "intradérmica", geriatrico: "geriátrico",
+  pediatrico: "pediátrico", reposicao: "reposição", flexivel: "flexível", micrometrica: "micrométrica",
+  pneumotorax: "pneumotórax", drenagem: "drenagem", traqueia: "traqueia", insercao: "inserção", origem: "origem",
+  musculos: "músculos", musculo: "músculo", nucleo: "núcleo", molecula: "molécula", atomicas: "atômicas",
+  atomica: "atômica", orbitas: "órbitas", orbital: "orbital", aumento: "aumento", visualizacao: "visualização",
+  ossea: "óssea", osseo: "ósseo", ossos: "ossos", mitose: "mitose", meiose: "meiose", genetica: "genética",
+  embriao: "embrião", fecundacao: "fecundação", reproducao: "reprodução", reprodutor: "reprodutor", orbitais: "orbitais",
+};
+
 /** Gera slug de URL: sem acentos, minúsculo, hífens. */
 export function slugify(s: string): string {
   return s
@@ -32,7 +62,9 @@ export function normalizeProductName(raw: string): string {
     if (/\d/.test(core) && /[A-Z]/.test(core) && core.length <= 6 && !/^\d+[,.]?\d*$/.test(core)) {
       return word; // códigos como "3D", "SD4000"
     }
-    const lower = word.toLocaleLowerCase("pt-BR");
+    let lower = word.toLocaleLowerCase("pt-BR");
+    const key = core.toLocaleLowerCase("pt-BR");
+    if (ACCENTS[key]) lower = lower.replace(key, ACCENTS[key]);
     if (i === 0) return lower.charAt(0).toLocaleUpperCase("pt-BR") + lower.slice(1);
     if (LOWER_WORDS.has(core.toLowerCase())) return lower;
     return lower;

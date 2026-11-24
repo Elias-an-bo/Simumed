@@ -22,6 +22,14 @@ describe("normalizeProductName", () => {
     );
     expect(normalizeProductName("TREINADOR DE DEA")).toBe("Treinador de DEA");
   });
+  it("restaura acentos que faltam na cotação", () => {
+    expect(normalizeProductName("SIMULADOR DE INJECAO E PUNCAO ARTERIAL BRACO BEBE")).toBe(
+      "Simulador de injeção e punção arterial braço bebê",
+    );
+    expect(normalizeProductName("OCULAR PARA MICROSCOPIO BIOLOGICO C/RETÍCULO P/ MEDICAO")).toBe(
+      "Ocular para microscópio biológico com retículo para medição",
+    );
+  });
   it("junta espaços repetidos", () => {
     expect(normalizeProductName("  KIT   TRAUMA  ")).toBe("Kit trauma");
   });
